@@ -1,0 +1,280 @@
+<div class="driver-layout">
+
+  <!-- =====================================================
+       HEADER DRIVER
+  ====================================================== -->
+
+  <header class="driver-header">
+
+    <div class="driver-header-inner">
+
+      <!-- =================================================
+           LOGO
+      ================================================== -->
+
+      <a
+        routerLink="/dashboard"
+        class="brand"
+      >
+
+        <span class="brand-icon">
+
+          <img
+            src="favicon.ico"
+            alt="METOA"
+          >
+
+        </span>
+
+        <span class="brand-name">
+          METOA
+        </span>
+
+      </a>
+
+
+      <!-- =================================================
+           MENU MOBILE
+      ================================================== -->
+
+      <input
+        type="checkbox"
+        id="driver-menu-toggle"
+        class="driver-menu-toggle"
+      >
+
+      <label
+        for="driver-menu-toggle"
+        class="menu-toggle-button"
+        aria-label="Ouvrir le menu"
+      >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </label>
+
+
+      <!-- =================================================
+           NAVIGATION
+      ================================================== -->
+
+      <nav class="driver-nav">
+
+        <!-- DASHBOARD -->
+
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+        >
+
+          <span class="nav-icon">
+            ⌂
+          </span>
+
+          <span>
+            Tableau de bord
+          </span>
+
+        </a>
+
+
+        <!-- TRAJETS -->
+
+        <a
+          routerLink="/trajets"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-link"
+        >
+
+          <span class="nav-icon">
+            🚗
+          </span>
+
+          <span>
+            Mes trajets
+          </span>
+
+        </a>
+
+
+        <!-- RESERVATIONS -->
+
+        <a
+          routerLink="/reservations"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-link"
+        >
+
+          <span class="nav-icon">
+            ▣
+          </span>
+
+          <span>
+            Réservations
+          </span>
+
+        </a>
+
+
+        <!-- MESSAGES -->
+
+        <a
+          routerLink="/messagerie"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-link"
+        >
+
+          <span class="nav-icon">
+            💬
+          </span>
+
+          <span>
+            Messages
+          </span>
+
+        </a>
+
+
+        <!-- AVIS -->
+
+        <a
+          routerLink="/avis"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-link"
+        >
+
+          <span class="nav-icon">
+            ⭐
+          </span>
+
+          <span>
+            Avis
+          </span>
+
+        </a>
+
+
+        <!-- PROFIL -->
+
+        <a
+          routerLink="/profil"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-link"
+        >
+
+          <span class="nav-icon">
+            👤
+          </span>
+
+          <span>
+            Mon profil
+          </span>
+
+        </a>
+
+      </nav>
+
+
+      <!-- =================================================
+           NOTIFICATIONS
+      ================================================== -->
+
+      <div class="driver-notifications">
+
+        <button
+          type="button"
+          class="notification-button"
+          title="Notifications"
+        >
+
+          🔔
+
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           UTILISATEUR
+      ================================================== -->
+
+      <div class="driver-user">
+
+        <!-- AVATAR -->
+
+        <div class="user-avatar">
+
+          @if (getPhotoProfilUrl()) {
+
+            <img
+              [src]="getPhotoProfilUrl()!"
+              [alt]="nomComplet"
+              class="user-avatar-image"
+            >
+
+          } @else {
+
+            <span>
+              {{ initiale }}
+            </span>
+
+          }
+
+        </div>
+
+
+        <!-- INFORMATIONS -->
+
+        <div class="user-info">
+
+          <strong>
+            {{ nomComplet }}
+          </strong>
+
+          <span>
+            CHAUFFEUR
+          </span>
+
+        </div>
+
+
+        <!-- DÉCONNEXION -->
+
+        <button
+          type="button"
+          class="logout-button"
+          (click)="deconnexion()"
+          title="Déconnexion"
+        >
+
+          ⎋
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       CONTENU DRIVER
+  ====================================================== -->
+
+  <main class="driver-content">
+
+    <router-outlet></router-outlet>
+
+  </main>
+
+</div>

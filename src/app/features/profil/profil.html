@@ -1,0 +1,1190 @@
+<div class="profil-page">
+
+  <!-- =====================================================
+       LOADING
+  ====================================================== -->
+
+  <div
+    class="profil-loading"
+    *ngIf="chargement"
+  >
+    <div class="loading-spinner"></div>
+
+
+    <p>
+      Chargement de votre profil...
+    </p>
+
+
+  </div>
+
+  <!-- =====================================================
+       CONTENU
+  ====================================================== -->
+
+  <ng-container *ngIf="!chargement">
+
+    ```
+    <!-- =================================================
+         MESSAGES
+    ================================================== -->
+    <div
+      class="alert alert-success"
+      *ngIf="messageSucces"
+    >
+      <span>✓</span>
+      {{ messageSucces }}
+    </div>
+
+    <div
+      class="alert alert-error"
+      *ngIf="messageErreur"
+    >
+      <span>!</span>
+      {{ messageErreur }}
+    </div>
+
+
+    <!-- =================================================
+         TITRE
+    ================================================== -->
+    <section class="page-header">
+
+      <div>
+
+    <span class="page-kicker">
+      ESPACE CHAUFFEUR
+    </span>
+
+        <h1>
+          Mon <span>profil</span>
+        </h1>
+
+        <p>
+          Gérez vos informations personnelles et votre profil conducteur.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         PROFILE HERO
+    ================================================== -->
+    <section class="profile-hero metoa-card">
+
+      <!-- =========================
+           COVER
+      ========================== -->
+      <div
+        class="cover-photo"
+        [style.backgroundImage]="
+      getPhotoCover()
+        ? 'url(' + getPhotoCover() + ')'
+        : 'none'
+    "
+      >
+
+        <div
+          class="cover-placeholder"
+          *ngIf="!getPhotoCover()"
+        >
+          <span>🚗</span>
+        </div>
+
+        <div class="cover-overlay"></div>
+
+        <div class="cover-actions">
+
+          <label
+            class="photo-action"
+            for="coverInput"
+          >
+        <span>
+          {{ uploadCoverEnCours ? '...' : '🖼️' }}
+        </span>
+
+            <span>
+          Modifier la couverture
+        </span>
+          </label>
+
+          <input
+            id="coverInput"
+            type="file"
+            hidden
+            accept="image/*"
+            (change)="selectionnerCover($event)"
+          />
+
+          <button
+            type="button"
+            class="photo-action danger"
+            *ngIf="utilisateur?.coverPhotoUrl"
+            (click)="supprimerCover()"
+          >
+            🗑️ Supprimer
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           INFORMATIONS PRINCIPALES
+      ========================== -->
+      <div class="profile-hero-content">
+
+        <div class="profile-avatar-wrapper">
+
+          <div class="profile-avatar">
+
+            <img
+              *ngIf="getPhotoProfil()"
+              [src]="getPhotoProfil()!"
+              [alt]="nomComplet"
+            />
+
+            <span *ngIf="!getPhotoProfil()">
+          {{ initiale }}
+        </span>
+
+          </div>
+
+          <label
+            class="avatar-edit"
+            for="photoInput"
+            title="Modifier la photo"
+          >
+            📷
+          </label>
+
+          <input
+            id="photoInput"
+            type="file"
+            hidden
+            accept="image/*"
+            (change)="selectionnerPhoto($event)"
+          />
+
+        </div>
+
+
+        <div class="profile-main-info">
+
+          <div>
+
+            <div class="profile-name-line">
+
+              <h2>
+                {{ nomComplet }}
+              </h2>
+
+              <span class="role-badge">
+            CHAUFFEUR
+          </span>
+
+            </div>
+
+            <p class="profile-email">
+              {{ utilisateur?.email }}
+            </p>
+
+          </div>
+
+
+          <div class="profile-status">
+
+        <span
+          class="status-dot"
+          [class.inactive]="
+            conducteurForm.controls.actif.value === false
+          "
+        ></span>
+
+            <span>
+          {{
+                conducteurForm.controls.actif.value
+                  ? 'Profil actif'
+                  : 'Profil inactif'
+              }}
+        </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           SUPPRESSION PHOTO
+      ========================== -->
+      <div
+        class="avatar-delete"
+        *ngIf="utilisateur?.photoUrl"
+      >
+
+        <button
+          type="button"
+          class="text-danger"
+          (click)="supprimerPhoto()"
+        >
+          Supprimer la photo de profil
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         STATISTIQUES
+    ================================================== -->
+    <section class="stats-grid">
+
+      <!-- Note -->
+      <div class="stat-card metoa-card">
+
+        <div class="stat-icon">
+          ⭐
+        </div>
+
+        <div>
+
+      <span>
+        Note moyenne
+      </span>
+
+          <strong>
+            {{ formatNote(profile?.noteMoyenne) }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- Avis -->
+      <div class="stat-card metoa-card">
+
+        <div class="stat-icon">
+          💬
+        </div>
+
+        <div>
+
+      <span>
+        Avis reçus
+      </span>
+
+          <strong>
+            {{ profile?.nombreAvis ?? 0 }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- Trajets -->
+      <div class="stat-card metoa-card">
+
+        <div class="stat-icon">
+          🚗
+        </div>
+
+        <div>
+
+      <span>
+        Trajets effectués
+      </span>
+
+          <strong>
+            {{ profile?.nombreTrajetsEffectues ?? 0 }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- Taux -->
+      <div class="stat-card metoa-card">
+
+        <div class="stat-icon">
+          📈
+        </div>
+
+        <div>
+
+      <span>
+        Taux d'acceptation
+      </span>
+
+          <strong>
+            {{ profile?.tauxAcceptation ?? 0 }}%
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         INFORMATIONS PERSONNELLES
+    ================================================== -->
+    <section class="content-card metoa-card">
+
+      <div class="section-title">
+
+        <div>
+
+      <span class="section-icon">
+        👤
+      </span>
+
+          <div>
+
+            <h2>
+              Informations personnelles
+            </h2>
+
+            <p>
+              Les informations associées à votre compte METOA.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <form
+        [formGroup]="userForm"
+        (ngSubmit)="sauvegarderUtilisateur()"
+      >
+
+        <div class="form-grid">
+
+          <!-- Prénom -->
+          <div class="form-group">
+
+            <label for="prenom">
+              Prénom
+            </label>
+
+            <input
+              id="prenom"
+              type="text"
+              formControlName="prenom"
+              placeholder="Votre prénom"
+            />
+
+            <small
+              class="field-error"
+              *ngIf="
+            userForm.controls.prenom.touched &&
+            userForm.controls.prenom.invalid
+          "
+            >
+              Le prénom est obligatoire.
+            </small>
+
+          </div>
+
+
+          <!-- Nom -->
+          <div class="form-group">
+
+            <label for="nom">
+              Nom
+            </label>
+
+            <input
+              id="nom"
+              type="text"
+              formControlName="nom"
+              placeholder="Votre nom"
+            />
+
+            <small
+              class="field-error"
+              *ngIf="
+            userForm.controls.nom.touched &&
+            userForm.controls.nom.invalid
+          "
+            >
+              Le nom est obligatoire.
+            </small>
+
+          </div>
+
+
+          <!-- Email -->
+          <div class="form-group">
+
+            <label for="email">
+              Adresse email
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="exemple@email.com"
+            />
+
+            <small
+              class="field-error"
+              *ngIf="
+            userForm.controls.email.touched &&
+            userForm.controls.email.invalid
+          "
+            >
+              Veuillez saisir une adresse email valide.
+            </small>
+
+          </div>
+
+
+          <!-- Téléphone -->
+          <div class="form-group">
+
+            <label for="telephone">
+              Téléphone
+            </label>
+
+            <input
+              id="telephone"
+              type="tel"
+              formControlName="telephone"
+              placeholder="+237..."
+            />
+
+          </div>
+
+
+          <!-- Sexe -->
+          <div class="form-group">
+
+            <label for="sexe">
+              Sexe
+            </label>
+
+            <input
+              id="sexe"
+              type="text"
+              formControlName="sexe"
+              placeholder="Sexe"
+            />
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="sauvegardeUtilisateur"
+          >
+
+        <span
+          class="button-spinner"
+          *ngIf="sauvegardeUtilisateur"
+        ></span>
+
+            {{
+              sauvegardeUtilisateur
+                ? 'Enregistrement...'
+                : 'Enregistrer les modifications'
+            }}
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+
+    <!-- =================================================
+         PROFIL CONDUCTEUR
+    ================================================== -->
+    <section class="content-card metoa-card">
+
+      <div class="section-title">
+
+        <div>
+
+      <span class="section-icon">
+        🚗
+      </span>
+
+          <div>
+
+            <h2>
+              Profil conducteur
+            </h2>
+
+            <p>
+              Ces informations permettent aux passagers de mieux vous connaître.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Profil non créé -->
+      <div
+        class="profile-not-created"
+        *ngIf="!profileExiste"
+      >
+
+        <div class="notice-icon">
+          🚗
+        </div>
+
+        <div>
+
+          <strong>
+            Votre profil conducteur n'est pas encore configuré.
+          </strong>
+
+          <p>
+            Complétez les informations ci-dessous pour créer votre profil conducteur.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <form
+        [formGroup]="conducteurForm"
+        (ngSubmit)="sauvegarderProfilConducteur()"
+      >
+
+        <div class="form-grid">
+
+          <!-- Adresse -->
+          <div class="form-group full-width">
+
+            <label for="adresse">
+              Adresse
+            </label>
+
+            <input
+              id="adresse"
+              type="text"
+              formControlName="adresse"
+              placeholder="Votre adresse"
+            />
+
+            <small
+              class="field-error"
+              *ngIf="
+            conducteurForm.controls.adresse.touched &&
+            conducteurForm.controls.adresse.invalid
+          "
+            >
+              L'adresse est obligatoire.
+            </small>
+
+          </div>
+
+
+          <!-- Véhicule -->
+          <div class="form-group full-width">
+
+            <label for="vehicule">
+              Véhicule
+            </label>
+
+            <input
+              id="vehicule"
+              type="text"
+              formControlName="vehicule"
+              placeholder="Ex : Toyota Corolla 2018"
+            />
+
+          </div>
+
+
+          <!-- Préférences -->
+          <div class="form-group full-width">
+
+            <label for="preferences">
+              Préférences conducteur
+            </label>
+
+            <input
+              id="preferences"
+              type="text"
+              formControlName="preferences"
+              placeholder="Ex : Non-fumeur, musique calme..."
+            />
+
+            <small
+              class="field-error"
+              *ngIf="
+            conducteurForm.controls.preferences.touched &&
+            conducteurForm.controls.preferences.invalid
+          "
+            >
+              Les préférences sont obligatoires.
+            </small>
+
+          </div>
+
+
+          <!-- Bio -->
+          <div class="form-group full-width">
+
+            <label for="bio">
+              Présentation
+            </label>
+
+            <textarea
+              id="bio"
+              rows="5"
+              formControlName="bio"
+              placeholder="Présentez-vous aux passagers..."
+            ></textarea>
+
+            <div class="textarea-footer">
+
+              <small>
+                Maximum 500 caractères
+              </small>
+
+              <small>
+                {{ conducteurForm.controls.bio.value.length }}/500
+              </small>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Actif -->
+        <div class="active-toggle">
+
+          <div>
+
+            <strong>
+              Profil conducteur actif
+            </strong>
+
+            <p>
+              Lorsque votre profil est actif, vous pouvez proposer des trajets.
+            </p>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              formControlName="actif"
+            />
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="sauvegardeConducteur"
+          >
+
+        <span
+          class="button-spinner"
+          *ngIf="sauvegardeConducteur"
+        ></span>
+
+            {{
+              sauvegardeConducteur
+                ? 'Enregistrement...'
+                : (
+                  profileExiste
+                    ? 'Enregistrer le profil conducteur'
+                    : 'Créer mon profil conducteur'
+                )
+            }}
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+
+    <!-- =================================================
+         DOCUMENTS CONDUCTEUR
+    ================================================== -->
+    <section class="content-card metoa-card">
+
+      <div class="section-title">
+
+        <div>
+
+      <span class="section-icon">
+        📄
+      </span>
+
+          <div>
+
+            <h2>
+              Documents conducteur
+            </h2>
+
+            <p>
+              Gérez vos documents justificatifs nécessaires à votre activité de chauffeur.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           INFORMATION
+      ================================================== -->
+      <div
+        class="profile-not-created"
+        *ngIf="!profileExiste"
+      >
+
+        <div class="notice-icon">
+          📄
+        </div>
+
+        <div>
+
+          <strong>
+            Créez d'abord votre profil conducteur.
+          </strong>
+
+          <p>
+            Vous pourrez ensuite ajouter vos documents justificatifs.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           UPLOAD DOCUMENT
+      ================================================== -->
+      <div
+        class="document-upload"
+        *ngIf="profileExiste"
+      >
+
+        <!-- Type -->
+        <div class="form-group">
+
+          <label for="typeDocument">
+            Type de document
+          </label>
+
+          <select
+            id="typeDocument"
+            [(ngModel)]="typeDocumentSelectionne"
+            [ngModelOptions]="{ standalone: true }"
+          >
+
+            <option
+              *ngFor="let type of typesDocuments"
+              [value]="type.value"
+            >
+              {{ type.label }}
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Sélection fichier -->
+        <div class="form-group">
+
+          <label for="documentInput">
+            Document
+          </label>
+
+          <input
+            id="documentInput"
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+            (change)="onDocumentFileSelected($event)"
+            [disabled]="uploadDocumentEnCours"
+          />
+
+        </div>
+
+
+        <!-- Fichier sélectionné -->
+        <div
+          class="document-selected"
+          *ngIf="fichierDocumentSelectionne"
+        >
+
+      <span class="document-selected-icon">
+        📄
+      </span>
+
+          <div>
+
+            <strong>
+              {{ fichierDocumentSelectionne.name }}
+            </strong>
+
+            <small>
+              {{
+                (
+                  fichierDocumentSelectionne.size / 1024 / 1024
+                ).toFixed(2)
+              }}
+              Mo
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <!-- Bouton upload -->
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="primary-button"
+            (click)="uploadDocument()"
+            [disabled]="
+          !fichierDocumentSelectionne ||
+          uploadDocumentEnCours
+        "
+          >
+
+        <span
+          class="button-spinner"
+          *ngIf="uploadDocumentEnCours"
+        ></span>
+
+            <span *ngIf="!uploadDocumentEnCours">
+          📤
+        </span>
+
+            {{
+              uploadDocumentEnCours
+                ? 'Téléversement...'
+                : 'Ajouter le document'
+            }}
+
+          </button>
+
+        </div>
+
+
+        <!-- Message succès -->
+        <div
+          class="alert alert-success"
+          *ngIf="messageDocument"
+        >
+
+      <span>
+        ✓
+      </span>
+
+          {{ messageDocument }}
+
+        </div>
+
+
+        <!-- Message erreur -->
+        <div
+          class="alert alert-error"
+          *ngIf="erreurDocument"
+        >
+
+      <span>
+        !
+      </span>
+
+          {{ erreurDocument }}
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           LISTE DES DOCUMENTS
+      ================================================== -->
+      <div
+        class="documents-list"
+        *ngIf="profileExiste"
+      >
+
+        <!-- Chargement -->
+        <div
+          class="documents-loading"
+          *ngIf="chargementDocuments"
+        >
+
+          <div class="loading-spinner"></div>
+
+          <p>
+            Chargement de vos documents...
+          </p>
+
+        </div>
+
+
+        <!-- Aucun document -->
+        <div
+          class="empty-document"
+          *ngIf="
+        !chargementDocuments &&
+        documents.length === 0
+      "
+        >
+
+      <span>
+        📂
+      </span>
+
+          <p>
+            Aucun document conducteur enregistré.
+          </p>
+
+          <small>
+            Formats acceptés : PDF, JPG, JPEG, PNG, DOC et DOCX — maximum 5 Mo.
+          </small>
+
+        </div>
+
+
+        <!-- Documents -->
+        <div
+          class="document-card"
+          *ngFor="let document of documents"
+        >
+
+          <div class="document-icon">
+            📄
+          </div>
+
+
+          <div class="document-info">
+
+            <strong>
+              {{ document.nom }}
+            </strong>
+
+            <span>
+          {{
+                document.type === 'PERMIS_CONDUIRE'
+                  ? 'Permis de conduire'
+                  : document.type === 'CARTE_IDENTITE'
+                    ? "Carte d'identité"
+                    : document.type === 'ASSURANCE'
+                      ? 'Assurance'
+                      : document.type === 'CARTE_GRISE'
+                        ? 'Carte grise'
+                        : 'Autre document'
+              }}
+        </span>
+
+            <small>
+              Ajouté le
+              {{ document.dateUpload | date:'dd/MM/yyyy à HH:mm' }}
+            </small>
+
+          </div>
+
+
+          <div class="document-actions">
+
+            <!-- Voir -->
+            <button
+              type="button"
+              class="secondary-button"
+              (click)="ouvrirDocument(document)"
+            >
+              👁️ Voir
+            </button>
+
+
+            <!-- Supprimer -->
+            <button
+              type="button"
+              class="secondary-button danger"
+              (click)="supprimerDocument(document)"
+            >
+              🗑️ Supprimer
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         SECURITE
+    ================================================== -->
+    <section class="content-card metoa-card">
+
+      <div class="section-title">
+
+        <div>
+
+      <span class="section-icon">
+        🔐
+      </span>
+
+          <div>
+
+            <h2>
+              Sécurité
+            </h2>
+
+            <p>
+              Modifiez le mot de passe de votre compte METOA.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <form
+        class="password-form"
+        [formGroup]="passwordForm"
+        (ngSubmit)="changerMotDePasse()"
+      >
+
+        <div class="form-grid">
+
+          <!-- Ancien -->
+          <div class="form-group full-width">
+
+            <label for="ancienPasse">
+              Mot de passe actuel
+            </label>
+
+            <input
+              id="ancienPasse"
+              type="password"
+              formControlName="ancienPasse"
+              placeholder="Votre mot de passe actuel"
+            />
+
+          </div>
+
+
+          <!-- Nouveau -->
+          <div class="form-group">
+
+            <label for="nouveauPasse">
+              Nouveau mot de passe
+            </label>
+
+            <input
+              id="nouveauPasse"
+              type="password"
+              formControlName="nouveauPasse"
+              placeholder="Nouveau mot de passe"
+            />
+
+            <small>
+              Minimum 6 caractères.
+            </small>
+
+          </div>
+
+
+          <!-- Confirmation -->
+          <div class="form-group">
+
+            <label for="confirmationPasse">
+              Confirmation
+            </label>
+
+            <input
+              id="confirmationPasse"
+              type="password"
+              formControlName="confirmationPasse"
+              placeholder="Confirmer le mot de passe"
+            />
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="changementMotPasseEnCours"
+          >
+
+        <span
+          class="button-spinner"
+          *ngIf="changementMotPasseEnCours"
+        ></span>
+
+            {{
+              changementMotPasseEnCours
+                ? 'Modification...'
+                : 'Modifier mon mot de passe'
+            }}
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+
+  </ng-container>
+
+</div>

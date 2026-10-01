@@ -1,0 +1,383 @@
+<div class="dashboard">
+
+  <!-- =====================================================
+       EN-TÊTE
+  ====================================================== -->
+
+  <section class="dashboard-hero">
+
+    <div class="hero-content">
+
+      <span class="hero-badge">
+        ESPACE CHAUFFEUR
+      </span>
+
+      <h1>
+        Bonjour
+        <span class="gradient-text">
+          {{ prenom }}
+        </span>
+        👋
+      </h1>
+
+      <p>
+        Bienvenue dans votre espace chauffeur.
+        Gérez vos trajets, vos réservations et votre activité
+        depuis votre tableau de bord.
+      </p>
+
+    </div>
+
+
+    <div class="hero-decoration">
+
+      <div class="hero-circle circle-one"></div>
+
+      <div class="hero-circle circle-two"></div>
+
+      <div class="hero-car">
+        🚗
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       STATISTIQUES
+  ====================================================== -->
+
+  <section class="stats-grid">
+
+
+    <!-- TRAJETS -->
+
+    <article class="stat-card">
+
+      <div class="stat-icon purple">
+        🚗
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          Mes trajets
+        </span>
+
+        <strong class="stat-value">
+          0
+        </strong>
+
+        <span class="stat-description">
+          trajets publiés
+        </span>
+
+      </div>
+
+    </article>
+
+
+    <!-- RESERVATIONS -->
+
+    <article class="stat-card">
+
+      <div class="stat-icon pink">
+        📅
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          Réservations
+        </span>
+
+        <strong class="stat-value">
+          0
+        </strong>
+
+        <span class="stat-description">
+          réservations reçues
+        </span>
+
+      </div>
+
+    </article>
+
+
+    <!-- PLACES -->
+
+    <article class="stat-card">
+
+      <div class="stat-icon cyan">
+        👥
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          Passagers
+        </span>
+
+        <strong class="stat-value">
+          0
+        </strong>
+
+        <span class="stat-description">
+          passagers transportés
+        </span>
+
+      </div>
+
+    </article>
+
+
+    <!-- NOTE -->
+
+    <article class="stat-card">
+
+      <div class="stat-icon orange">
+        ⭐
+      </div>
+
+      <div class="stat-content">
+
+        <span class="stat-label">
+          Ma note
+        </span>
+
+        <strong class="stat-value">
+          —
+        </strong>
+
+        <span class="stat-description">
+          aucune note pour le moment
+        </span>
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- =====================================================
+       CONTENU PRINCIPAL
+  ====================================================== -->
+
+  <section class="dashboard-grid">
+
+
+    <!-- ===================================================
+         PROCHAIN TRAJET
+    ================================================== -->
+
+    <article class="dashboard-card next-trip">
+
+      <div class="card-header">
+
+        <div>
+
+          <span class="section-label">
+            PROCHAIN TRAJET
+          </span>
+
+          <h2>
+            Aucun trajet programmé
+          </h2>
+
+        </div>
+
+        <span class="card-icon">
+          🚗
+        </span>
+
+      </div>
+
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          🛣️
+        </div>
+
+        <h3>
+          Votre prochain trajet apparaîtra ici
+        </h3>
+
+        <p>
+          Publiez votre premier trajet pour commencer
+          à recevoir des réservations.
+        </p>
+
+        <a
+          routerLink="/trajets"
+          class="primary-button"
+        >
+          Créer un trajet
+        </a>
+
+      </div>
+
+    </article>
+
+
+    <!-- ===================================================
+         ACTIONS RAPIDES
+    ================================================== -->
+
+    <article class="dashboard-card quick-actions">
+
+      <div class="card-header">
+
+        <div>
+
+          <span class="section-label">
+            ACTIONS RAPIDES
+          </span>
+
+          <h2>
+            Que souhaitez-vous faire ?
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="actions-list">
+
+
+        <a
+          routerLink="/trajets"
+          class="action-item"
+        >
+
+          <span class="action-icon purple">
+            🚗
+          </span>
+
+          <span class="action-text">
+
+            <strong>
+              Gérer mes trajets
+            </strong>
+
+            <small>
+              Créer, modifier ou supprimer un trajet
+            </small>
+
+          </span>
+
+          <span class="action-arrow">
+            →
+          </span>
+
+        </a>
+
+
+        <a
+          routerLink="/reservations"
+          class="action-item"
+        >
+
+          <span class="action-icon pink">
+            📅
+          </span>
+
+          <span class="action-text">
+
+            <strong>
+              Voir les réservations
+            </strong>
+
+            <small>
+              Consultez les demandes de réservation
+            </small>
+
+          </span>
+
+          <span class="action-arrow">
+            →
+          </span>
+
+        </a>
+
+
+        <a
+          routerLink="/profil"
+          class="action-item"
+        >
+
+          <span class="action-icon cyan">
+            👤
+          </span>
+
+          <span class="action-text">
+
+            <strong>
+              Mon profil
+            </strong>
+
+            <small>
+              Gérez vos informations personnelles
+            </small>
+
+          </span>
+
+          <span class="action-arrow">
+            →
+          </span>
+
+        </a>
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- =====================================================
+       ACTIVITÉ RÉCENTE
+  ====================================================== -->
+
+  <section class="dashboard-card activity-card">
+
+    <div class="card-header">
+
+      <div>
+
+        <span class="section-label">
+          ACTIVITÉ
+        </span>
+
+        <h2>
+          Activité récente
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="activity-empty">
+
+      <div class="empty-icon">
+        📊
+      </div>
+
+      <h3>
+        Aucune activité récente
+      </h3>
+
+      <p>
+        Vos nouvelles réservations, trajets et avis
+        apparaîtront ici.
+      </p>
+
+    </div>
+
+  </section>
+
+</div>

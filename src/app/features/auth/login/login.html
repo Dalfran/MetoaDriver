@@ -1,0 +1,78 @@
+<section class="login-page">
+
+  <div class="login-card">
+
+    <h1>Connexion chauffeur</h1>
+
+    <p>
+      Connectez-vous à votre espace MetoaDriver.
+    </p>
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="submit()"
+    >
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Votre adresse email"
+        />
+
+        @if (
+          loginForm.controls.email.touched &&
+          loginForm.controls.email.invalid
+          ) {
+          <small>
+            Veuillez saisir une adresse email valide.
+          </small>
+        }
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="passe">
+          Mot de passe
+        </label>
+
+        <input
+          id="passe"
+          type="password"
+          formControlName="passe"
+          placeholder="Votre mot de passe"
+        />
+
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loading"
+      >
+
+        @if (loading) {
+          Connexion...
+        } @else {
+          Se connecter
+        }
+
+      </button>
+
+    </form>
+
+  </div>
+
+</section>
